@@ -3,6 +3,7 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.7
 
 repositories {
@@ -11,4 +12,5 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 }

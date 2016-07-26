@@ -1,13 +1,14 @@
-package com.timursoft.subtitleparser;
+package com.timursoft.suber;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * These objects can (should) only be created through the implementations of parse() in the {@link Format} interface
+ * These objects can (should) only be created through the implementations of parse() in the {@link Parser} interface
  * They are an object representation of a subtitle file and contain all the subtitles and associated styles.
  */
-public class SubtitleObject {
+public class SubFileObject {
 
     public String scriptInfoText;
     public String stylesText;
@@ -16,13 +17,17 @@ public class SubtitleObject {
 
     //list of subtitles (begin time, reference)
     //represented by a tree map to maintain order
-    public Map<Integer, Subtitle> subtitles = new TreeMap<>();
+    public Map<Integer, Sub> subtitles = new TreeMap<>();
 
-    public void addSubtitle(Subtitle subtitle) {
-        int key = subtitle.startTime;
+    public void addSub(Sub sub) {
+        int key = sub.startTime;
         //in case the key is already there, we increase it by a millisecond, since no duplicates are allowed
         while (subtitles.containsKey(key)) key++;
-        subtitles.put(key, subtitle);
+        subtitles.put(key, sub);
+    }
+
+    public Collection<Sub> getSubs() {
+        return subtitles.values();
     }
 
 }

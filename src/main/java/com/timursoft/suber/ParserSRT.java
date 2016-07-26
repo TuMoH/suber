@@ -1,4 +1,4 @@
-package com.timursoft.subtitleparser;
+package com.timursoft.suber;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,15 +6,15 @@ import java.util.regex.Pattern;
 /**
  * This class represents the .SRT subtitle format
  */
-public class FormatSRT implements Format {
+public class ParserSRT implements Parser {
 
     private final static Pattern PARSE_PATTERN = Pattern.compile("(\\d+)(\\r\\n|\\n)" +
             "(\\d+:\\d+:\\d+,\\d+) --> (\\d+:\\d+:\\d+,\\d+)" +
             "(\\r\\n|\\n)(.*)(\\r\\n|\\n){1,2}");
 
     @Override
-    public SubtitleObject parse(String text) {
-        SubtitleObject subtitleObject = new SubtitleObject();
+    public SubFileObject parse(String text) {
+        SubFileObject subFileObject = new SubFileObject();
 
         Matcher matcher = PARSE_PATTERN.matcher(text);
         while (matcher.find()) {
@@ -22,26 +22,26 @@ public class FormatSRT implements Format {
             String endTime = matcher.group(4);
             String content = matcher.group(6);
 
-            Subtitle subtitle = new Subtitle(content, parseTime(startTime), parseTime(endTime), null);
-            subtitleObject.addSubtitle(subtitle);
+            Sub sub = new Sub(content, parseTime(startTime), parseTime(endTime), null);
+            subFileObject.addSub(sub);
         }
-        return subtitleObject;
+        return subFileObject;
     }
 
-    public String serialize(SubtitleObject tto) {
+    public String serialize(SubFileObject subFileObject) {
         StringBuilder result = new StringBuilder();
         int captionNumber = 1;
 
-        for (Subtitle subtitle : tto.subtitles.values()) {
+        for (Sub sub : subFileObject.getSubs()) {
             //number is written
             result.append(captionNumber++).append(LINE_SEPARATOR);
             //time is written
-            result.append(serializeTime(subtitle.startTime))
+            result.append(serializeTime(sub.startTime))
                     .append(" --> ")
-                    .append(serializeTime(subtitle.endTime))
+                    .append(serializeTime(sub.endTime))
                     .append(LINE_SEPARATOR);
             //text is added
-            result.append(subtitle.content).append(LINE_SEPARATOR);
+            result.append(sub.content).append(LINE_SEPARATOR);
 
             //we add the next blank line
             result.append(LINE_SEPARATOR);
