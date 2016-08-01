@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,15 +22,14 @@ public class ParserSRTTest {
     @Test
     public void parse() throws Exception {
         SubFileObject subFileObject = formatSRT.parse(text);
-        Iterator<Sub> iterator = subFileObject.getSubs().iterator();
-        Sub sub = iterator.next();
+        Sub sub = subFileObject.subs.get(0);
 
-        assertEquals(2, subFileObject.getSubs().size());
+        assertEquals(2, subFileObject.subs.size());
         assertEquals(27160, sub.startTime);
         assertEquals(30000, sub.endTime);
         assertEquals("<i>The Tesseract has awakened.</i>", sub.content);
 
-        sub = iterator.next();
+        sub = subFileObject.subs.get(1);
 
         assertEquals(31760, sub.startTime);
         assertEquals(36515, sub.endTime);
@@ -46,13 +44,13 @@ public class ParserSRTTest {
         sub.startTime = 27160;
         sub.endTime = 30000;
         sub.content = "<i>The Tesseract has awakened.</i>";
-        subFileObject.addSub(sub);
+        subFileObject.subs.add(sub);
 
         Sub sub2 = new Sub();
         sub2.startTime = 31760;
         sub2.endTime = 36515;
         sub2.content = "It is on a little world, a human world.";
-        subFileObject.addSub(sub2);
+        subFileObject.subs.add(sub2);
 
         String result = formatSRT.serialize(subFileObject);
         assertEquals(text, result);

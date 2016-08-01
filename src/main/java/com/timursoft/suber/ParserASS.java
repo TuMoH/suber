@@ -36,7 +36,7 @@ public class ParserASS implements Parser {
                         //we parse the dialogue
                         Sub sub = parseDialogue(line.split(":", 2)[1].trim()
                                 .split(",", dialogueFormat.length), dialogueFormat);
-                        subFileObject.addSub(sub);
+                        subFileObject.subs.add(sub);
                     }
                 }
             } else if (FONTS.equalsIgnoreCase(head)) {
@@ -45,6 +45,7 @@ public class ParserASS implements Parser {
                 subFileObject.graphicsText = body;
             }
         }
+        subFileObject.sortSubs();
         return subFileObject;
     }
 
@@ -66,7 +67,7 @@ public class ParserASS implements Parser {
         result.append("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text")
                 .append(LINE_SEPARATOR);
         //Next we iterate over the subtitles
-        for (Sub sub : subFileObject.getSubs()) {
+        for (Sub sub : subFileObject.subs) {
             //for each caption
             result.append("Dialogue: 0,");
             //start time

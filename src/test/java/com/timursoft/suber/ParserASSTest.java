@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,19 +22,18 @@ public class ParserASSTest {
     @Test
     public void parse() throws Exception {
         SubFileObject subFileObject = formatASS.parse(text);
-        Iterator<Sub> iterator = subFileObject.getSubs().iterator();
-        Sub sub = iterator.next();
+        Sub sub = subFileObject.subs.get(0);
 
         assertEquals("info", subFileObject.scriptInfoText);
         assertEquals("styles", subFileObject.stylesText);
-        assertEquals(2, subFileObject.getSubs().size());
+        assertEquals(2, subFileObject.subs.size());
 
         assertEquals(0, sub.startTime);
         assertEquals(5100, sub.endTime);
         assertEquals("{\\pos(320,13)}Test-group {\\b1\\c&H0BA1C6&}ImTr{\\c&H645937&\\b0} present", sub.content);
         assertEquals("credits (top)", sub.style);
 
-        sub = iterator.next();
+        sub = subFileObject.subs.get(1);
 
         assertEquals(53560, sub.startTime);
         assertEquals(57970, sub.endTime);
@@ -54,13 +52,13 @@ public class ParserASSTest {
         sub.endTime = 5100;
         sub.content = "{\\pos(320,13)}Test-group {\\b1\\c&H0BA1C6&}ImTr{\\c&H645937&\\b0} present";
         sub.style = "credits (top)";
-        subFileObject.addSub(sub);
+        subFileObject.subs.add(sub);
 
         Sub sub2 = new Sub();
         sub2.startTime = 53560;
         sub2.endTime = 57970;
         sub2.content = "- Your Majesty! \\N- eunuch Pang nothing to blame";
-        subFileObject.addSub(sub2);
+        subFileObject.subs.add(sub2);
 
         String text = formatASS.serialize(subFileObject);
         assertEquals(text, text);

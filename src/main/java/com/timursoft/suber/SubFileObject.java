@@ -1,8 +1,9 @@
 package com.timursoft.suber;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * These objects can (should) only be created through the implementations of parse() in the {@link Parser} interface
@@ -15,19 +16,15 @@ public class SubFileObject {
     public String fontsText;
     public String graphicsText;
 
-    //list of subtitles (begin time, reference)
-    //represented by a tree map to maintain order
-    public Map<Integer, Sub> subtitles = new TreeMap<>();
+    public List<Sub> subs = new ArrayList<>();
 
-    public void addSub(Sub sub) {
-        int key = sub.startTime;
-        //in case the key is already there, we increase it by a millisecond, since no duplicates are allowed
-        while (subtitles.containsKey(key)) key++;
-        subtitles.put(key, sub);
-    }
-
-    public Collection<Sub> getSubs() {
-        return subtitles.values();
+    public void sortSubs() {
+        Collections.sort(subs, new Comparator<Sub>() {
+            @Override
+            public int compare(Sub sub1, Sub sub2) {
+                return Integer.compare(sub1.startTime, sub2.startTime);
+            }
+        });
     }
 
 }

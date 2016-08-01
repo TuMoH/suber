@@ -23,8 +23,9 @@ public class ParserSRT implements Parser {
             String content = matcher.group(6);
 
             Sub sub = new Sub(content, parseTime(startTime), parseTime(endTime), null);
-            subFileObject.addSub(sub);
+            subFileObject.subs.add(sub);
         }
+        subFileObject.sortSubs();
         return subFileObject;
     }
 
@@ -32,7 +33,7 @@ public class ParserSRT implements Parser {
         StringBuilder result = new StringBuilder();
         int captionNumber = 1;
 
-        for (Sub sub : subFileObject.getSubs()) {
+        for (Sub sub : subFileObject.subs) {
             //number is written
             result.append(captionNumber++).append(LINE_SEPARATOR);
             //time is written
