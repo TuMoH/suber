@@ -9,7 +9,7 @@ repositories {
   maven { url "https://jitpack.io" }
 }
 dependencies {
-  compile 'com.github.TuMoH:suber:1.0'
+  compile 'com.github.TuMoH:suber:1.2.1'
 }
 ```
 2) Create a static import to Suber in your code like this:
