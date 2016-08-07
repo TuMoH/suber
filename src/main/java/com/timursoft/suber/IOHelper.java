@@ -24,6 +24,7 @@ public final class IOHelper {
     public static void writeStringToFile(String text, File file) throws FileNotFoundException {
         PrintWriter printWriter = new PrintWriter(file);
         printWriter.println(text);
+        printWriter.close();
     }
 
 }
