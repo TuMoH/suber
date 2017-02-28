@@ -5,7 +5,7 @@ package com.timursoft.suber;
  */
 public interface Parser {
 
-    String LINE_SEPARATOR = "\r\n";
+    String LINE_SEPARATOR = "\n";
 
     SubFileObject parse(String text);
 

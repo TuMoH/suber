@@ -24,7 +24,7 @@ public class ParserSRTTest {
         SubFileObject subFileObject = formatSRT.parse(text);
         Sub sub = subFileObject.subs.get(0);
 
-        assertEquals(2, subFileObject.subs.size());
+        assertEquals(3, subFileObject.subs.size());
         assertEquals(27160, sub.startTime);
         assertEquals(30000, sub.endTime);
         assertEquals("<i>The Tesseract has awakened.</i>", sub.content);
@@ -34,6 +34,12 @@ public class ParserSRTTest {
         assertEquals(31760, sub.startTime);
         assertEquals(36515, sub.endTime);
         assertEquals("It is on a little world, a human world.", sub.content);
+
+        sub = subFileObject.subs.get(2);
+
+        assertEquals(33333, sub.startTime);
+        assertEquals(44444, sub.endTime);
+        assertEquals("When you first came back,\nyou told me you loved me.", sub.content);
     }
 
     @Test
@@ -51,6 +57,12 @@ public class ParserSRTTest {
         sub2.endTime = 36515;
         sub2.content = "It is on a little world, a human world.";
         subFileObject.subs.add(sub2);
+
+        Sub sub3 = new Sub();
+        sub3.startTime = 33333;
+        sub3.endTime = 44444;
+        sub3.content = "When you first came back,\nyou told me you loved me.";
+        subFileObject.subs.add(sub3);
 
         String result = formatSRT.serialize(subFileObject);
         assertEquals(text, result);

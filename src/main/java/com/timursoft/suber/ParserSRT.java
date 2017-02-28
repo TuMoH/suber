@@ -8,9 +8,8 @@ import java.util.regex.Pattern;
  */
 public class ParserSRT implements Parser {
 
-    private final static Pattern PARSE_PATTERN = Pattern.compile("(\\d+)(\\r\\n|\\n)" +
-            "(\\d+:\\d+:\\d+,\\d+) --> (\\d+:\\d+:\\d+,\\d+)" +
-            "(\\r\\n|\\n)(.*)(\\r\\n|\\n){1,2}");
+    private final static Pattern PARSE_PATTERN = Pattern.compile(
+            "(\\d+)(?:\\r\\n|\\n)(\\d+:\\d+:\\d+,\\d+)(?: --> )(\\d+:\\d+:\\d+,\\d+)(?:\\r\\n|\\n)((?:.*(?:\\r\\n|\\n)*[^\\n\\d]+)*)");
 
     @Override
     public SubFileObject parse(String text) {
@@ -18,9 +17,9 @@ public class ParserSRT implements Parser {
 
         Matcher matcher = PARSE_PATTERN.matcher(text);
         while (matcher.find()) {
-            String startTime = matcher.group(3);
-            String endTime = matcher.group(4);
-            String content = matcher.group(6);
+            String startTime = matcher.group(2);
+            String endTime = matcher.group(3);
+            String content = matcher.group(4);
 
             Sub sub = new Sub(content, parseTime(startTime), parseTime(endTime), null);
             subFileObject.subs.add(sub);
