@@ -76,4 +76,26 @@ public class ParserSRTTest {
         assertEquals(text, result);
     }
 
+
+    @Test
+    public void parseIncorrectTime() throws Exception {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("bad_srt.srt");
+        text = IOHelper.stringFromIS(is).replace("\uFEFF", "");
+        formatSRT = new ParserSRT();
+
+        SubFileObject subFileObject = formatSRT.parse(text);
+        Sub sub = subFileObject.subs.get(0);
+
+        assertEquals(500, sub.startTime);
+        assertEquals(2000, sub.endTime);
+        assertEquals("<font color=\"#ffff00\" size=14>www.tvsubtitles.net</font>", sub.content);
+
+        sub = subFileObject.subs.get(1);
+
+        assertEquals(2, subFileObject.subs.size());
+        assertEquals(27160, sub.startTime);
+        assertEquals(30000, sub.endTime);
+        assertEquals("<i>The Tesseract has awakened.</i>", sub.content);
+    }
+
 }

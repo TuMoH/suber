@@ -11,6 +11,9 @@ public class ParserSRT implements Parser {
     private final static Pattern PARSE_PATTERN = Pattern.compile(
             "(\\d+)(?:\\r\\n|\\n)(\\d+:\\d+:\\d+,\\d+)(?: --> )(\\d+:\\d+:\\d+,\\d+)(?:\\r\\n|\\n)((?:.*(?:\\r\\n|\\n)*[^\\n\\d]+)*)");
 
+    private final static Pattern TIME_PATTERN = Pattern.compile(
+            "(\\d+):(\\d+):(\\d+),(\\d+)");
+
     @Override
     public SubFileObject parse(String text) {
         SubFileObject subFileObject = new SubFileObject();
@@ -51,11 +54,15 @@ public class ParserSRT implements Parser {
 
     private int parseTime(String text) {
         // this type of format:  01:02:22,501
-        int h, m, s, ms;
-        h = Integer.parseInt(text.substring(0, 2));
-        m = Integer.parseInt(text.substring(3, 5));
-        s = Integer.parseInt(text.substring(6, 8));
-        ms = Integer.parseInt(text.substring(9, 12));
+        int h = 0, m = 0, s = 0, ms = 0;
+
+        Matcher matcher = TIME_PATTERN.matcher(text);
+        if (matcher.find()) {
+            h = Integer.parseInt(matcher.group(1));
+            m = Integer.parseInt(matcher.group(2));
+            s = Integer.parseInt(matcher.group(3));
+            ms = Integer.parseInt(matcher.group(4));
+        }
 
         return (ms + s * 1000 + m * 60000 + h * 3600000);
     }

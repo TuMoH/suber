@@ -1,0 +1,7 @@
+1
+00:00:27,160 --> 00:00:30,000
+<i>The Tesseract has awakened.</i>
+
+2
+00:00:0,500 --> 00:00:2,00
+<font color="#ffff00" size=14>www.tvsubtitles.net</font>
